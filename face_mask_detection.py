@@ -36,3 +36,100 @@ import cv2
 from google.colab.patches import cv2_imshow
 from PIL import Image
 from sklearn.model_selection import train_test_split
+
+with_mask_files=os.listdir('data/with_mask')
+print(with_mask_files[0:5])
+print(with_mask_files[-5:])
+
+without_mask_files=os.listdir('data/without_mask')
+print(without_mask_files[0:5])
+print(without_mask_files[-5:])
+
+print('Number of with mask images:',len(with_mask_files))
+print('Number of without mask images:',len(without_mask_files))
+
+"""Creating Labels for the two class of images
+
+with mask-->
+
+without mask-->0
+"""
+
+# create the labels
+
+with_mask_labels=[1]*3725
+
+without_mask_labels=[0]*3828
+
+print(with_mask_labels[0:5])
+print(without_mask_labels[0:5])
+
+print(len(with_mask_labels))
+print(len(without_mask_labels))
+
+labels=with_mask_labels+without_mask_labels
+
+print(len(labels))
+print(labels[0:5])
+print(labels[-5:])
+
+"""**Displaying the Images**
+
+
+
+"""
+
+# displaying with mask image
+img=mpimg.imread('data/with_mask/with_mask_1545.jpg')
+imgplot=plt.imshow(img)
+plt.show()
+
+# displaying with mask image
+img=mpimg.imread('data/without_mask/without_mask_1501.jpg')
+imgplot=plt.imshow(img)
+plt.show()
+
+"""**Image Processing**
+
+1.Resize the images
+
+2.Convert the images to numpy arrays
+"""
+
+# convert images to numpy arrays+
+
+with_mask_path = 'data/with_mask/'
+
+data = []
+
+for img_file in with_mask_files:
+
+  image = Image.open(with_mask_path + img_file)
+  image = image.resize((128,128))
+  image = image.convert('RGB')
+  image = np.array(image)
+  data.append(image)
+
+
+
+without_mask_path = 'data/without_mask/'
+
+
+for img_file in without_mask_files:
+
+  image = Image.open(without_mask_path + img_file)
+  image = image.resize((128,128))
+  image = image.convert('RGB')
+  image = np.array(image)
+  data.append(image)
+
+type(data)
+
+len(data)
+
+data[0]
+
+type(data[0])
+
+data[0].shape
+
