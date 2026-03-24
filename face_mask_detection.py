@@ -133,3 +133,32 @@ type(data[0])
 
 data[0].shape
 
+# converting image list and label list to  numpy arrays
+
+X=np.array(data)
+Y=np.array(labels)
+
+type(X)
+
+type(Y)
+
+print(X.shape)
+print(Y.shape)
+
+print(Y)
+
+"""**Train Test Split**"""
+
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=2)
+
+print(X.shape, X_train.shape, X_test.shape)
+
+# scaling the data
+
+X_train_scaled = X_train/255
+
+X_test_scaled = X_test/255
+
+X_train[0]
+
+X_train_scaled[0]
