@@ -50,7 +50,7 @@ print('Number of without mask images:',len(without_mask_files))
 
 """Creating Labels for the two class of images
 
-with mask-->
+with mask-->1
 
 without mask-->0
 """
@@ -162,3 +162,113 @@ X_test_scaled = X_test/255
 X_train[0]
 
 X_train_scaled[0]
+
+import tensorflow as tf
+from tensorflow import keras
+
+num_of_classes = 2
+
+model = keras.Sequential()
+
+model.add(keras.layers.Conv2D(32, kernel_size=(3,3), activation='relu', input_shape=(128,128,3)))
+model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+
+
+model.add(keras.layers.Conv2D(64, kernel_size=(3,3), activation='relu'))
+model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+
+model.add(keras.layers.Flatten())
+
+model.add(keras.layers.Dense(128, activation='relu'))
+model.add(keras.layers.Dropout(0.5))
+
+model.add(keras.layers.Dense(64, activation='relu'))
+model.add(keras.layers.Dropout(0.5))
+
+
+model.add(keras.layers.Dense(num_of_classes, activation='sigmoid'))
+
+# compile the neural network
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['acc'])
+
+# training the neural network
+history = model.fit(X_train_scaled, Y_train, validation_split=0.1, epochs=10)
+
+loss, accuracy = model.evaluate(X_test_scaled, Y_test)
+print('Test Accuracy =', accuracy)
+
+h = history
+
+# plot the loss value
+plt.plot(h.history['loss'], label='train loss')
+plt.plot(h.history['val_loss'], label='validation loss')
+plt.legend()
+plt.show()
+
+# plot the accuracy value
+plt.plot(h.history['acc'], label='train accuracy')
+plt.plot(h.history['val_acc'], label='validation accuracy')
+plt.legend()
+plt.show()
+
+input_image_path = input('Path of the image to be predicted: ')
+
+input_image = cv2.imread(input_image_path)
+
+cv2_imshow(input_image)
+
+input_image_resized = cv2.resize(input_image, (128,128))
+
+input_image_scaled = input_image_resized/255
+
+input_image_reshaped = np.reshape(input_image_scaled, [1,128,128,3])
+
+input_prediction = model.predict(input_image_reshaped)
+
+print(input_prediction)
+
+
+input_pred_label = np.argmax(input_prediction)
+
+print(input_pred_label)
+
+
+if input_pred_label == 1:
+
+  print('The person in the image is wearing a mask')
+
+else:
+
+  print('The person in the image is not wearing a mask')
+
+input_image_path = input('Path of the image to be predicted: ')
+
+input_image = cv2.imread(input_image_path)
+
+cv2_imshow(input_image)
+
+input_image_resized = cv2.resize(input_image, (128,128))
+
+input_image_scaled = input_image_resized/255
+
+input_image_reshaped = np.reshape(input_image_scaled, [1,128,128,3])
+
+input_prediction = model.predict(input_image_reshaped)
+
+print(input_prediction)
+
+
+input_pred_label = np.argmax(input_prediction)
+
+print(input_pred_label)
+
+
+if input_pred_label == 1:
+
+  print('The person in the image is wearing a mask')
+
+else:
+
+  print('The person in the image is not wearing a mask')
